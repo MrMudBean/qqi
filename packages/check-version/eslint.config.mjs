@@ -1,14 +1,20 @@
 import globals from 'globals';
-import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import eslint from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
+import tsParser from '@typescript-eslint/parser';
+import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin';
 
 export default [
-  { files: ['**/*.{ts}'] },
-  { languageOptions: { globals: globals.browser } },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
+  {
+    files: ['src/**/*.ts'],
+    languageOptions: { globals: globals.browser },
+    parser: tsParser,
+    plugins: {
+      '@typescript-eslint': typescriptEslintPlugin,
+    },
+  },
+  eslint.configs.recommended, // 推荐的 eslint
   {
     plugins: {
       jsdoc: jsdocPlugin,

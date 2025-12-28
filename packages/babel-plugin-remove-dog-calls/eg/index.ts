@@ -1,4 +1,4 @@
-import { dog } from '../dog';
+import { dog } from './dog';
 
 console.log('====================================');
 console.log(dog.type);

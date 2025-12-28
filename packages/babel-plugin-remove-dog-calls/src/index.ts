@@ -1,4 +1,5 @@
-export default function (babel: { types: any }) {
+/** 移除打印狗 */
+function removeQqiDogCall(babel: { types: any }) {
   const { types: t } = babel;
   // 允许的值列表
   const ALLOWED_VALUES = ['all', 'error', 'info', 'warn'];
@@ -57,3 +58,7 @@ export default function (babel: { types: any }) {
     },
   };
 }
+
+export { removeQqiDogCall };
+
+export default removeQqiDogCall;

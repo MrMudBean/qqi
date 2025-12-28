@@ -13,8 +13,6 @@ import { esc } from '@color-pen/static';
  *
  * @param options - 配置项
  * @returns - dev log 工厂函数
- *
- *
  */
 function Dog(this: DevLog, options?: DogOptions): DevLog {
   if (isUndefined(options))
@@ -38,8 +36,8 @@ function Dog(this: DevLog, options?: DogOptions): DevLog {
   /**  当前获取环境值  */
   const _env =
     (platform === 'node' &&
-      (process.env[name.toUpperCase().concat('_DEV')] ??
-        process.env[name.toLowerCase().concat('_dev')])) ||
+      (globalThis?.process.env[name.toUpperCase().concat('_DEV')] ??
+        globalThis?.process.env[name.toLowerCase().concat('_dev')])) ||
     false;
   const env =
     _env === 'false' ? false : _env === 'true' ? true : (_env as DevLogType);
@@ -114,3 +112,5 @@ Dog.prototype.clear = () => {
 const DogConstructor = createConstructor(Dog);
 
 export { DogConstructor as Dog };
+
+export type { DevLogType, DevLog } from './type';

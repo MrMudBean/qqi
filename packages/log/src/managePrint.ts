@@ -17,8 +17,8 @@ export function managePrint(
 ) {
   if (platform === 'node') {
     const dev =
-      process.env[name.toUpperCase().concat('_DEV')] ||
-      process.env[name.toLowerCase().concat('_dev')];
+      globalThis?.process.env[name.toUpperCase().concat('_DEV')] ||
+      globalThis?.process.env[name.toLowerCase().concat('_dev')];
     /// 当前禁止使用打印
     /// node 环境未配置 NAME_DEV 环境变量
     /// 显式配置 NAME_DEV 环境变量为 false

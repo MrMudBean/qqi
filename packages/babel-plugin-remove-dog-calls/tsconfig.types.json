@@ -2,9 +2,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "rootDir": ".",
     "emitDeclarationOnly": true,
     "declaration": true,
-    "declarationDir": "dist/"
+    "declarationDir": "dist/es"
     // "types": ["node"],
   },
   "exclude": [
