@@ -47,6 +47,7 @@ packageJson = {
   repository: {
     type: 'git',
     url: 'git+https://github.com/MrMudBean/qqi.git',
+    directory: 'packages/babel-plugin-remove-dog-calls',
   },
   // browserslist: ['node>=18.0.0'],
   engines: {

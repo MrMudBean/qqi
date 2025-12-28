@@ -1,5 +1,5 @@
+import { Dev } from './dev';
 import { DevContextHookFn, InitDevOption, RunOptions } from './types';
-import { Dev } from './index';
 /**
  * 构建一个属性列表
  */

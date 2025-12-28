@@ -27,6 +27,11 @@ packageJson = {
   main: cjsPrefix + '/index.js', // 旧版本 CommonJs 入口
   module: esPrefix + '/index.js', // 旧版本 ESM 入口
   types: dtsPrefix + '/index.d.ts', // 旧版本类型入口
+  author: {
+    name: '泥豆君',
+    email: 'Mr.MudBean@outlook.com',
+    url: 'https://earthnut.dev',
+  },
   description: '原 @qqi/dev-log 中的 log 部分',
   sideEffects: false, // 核心：开启 Tree Shaking
   license: 'MIT',
@@ -49,6 +54,7 @@ packageJson = {
   repository: {
     type: 'git',
     url: 'git+https://github.com/MrMudBean/qqi.git',
+    directory: 'packages/log',
   },
   publishConfig: {
     access: 'public',

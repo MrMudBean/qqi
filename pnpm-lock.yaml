@@ -194,17 +194,17 @@ importers:
   packages/dev:
     dependencies:
       '@qqi/log':
-        specifier: ^0.1.1
-        version: 0.1.1
+        specifier: ^1.0.0
+        version: 1.0.0
       a-js-tools:
-        specifier: ^1.0.10
-        version: 1.0.12
+        specifier: ^2.0.1
+        version: 2.0.1
       a-type-of-js:
-        specifier: ^1.0.7
-        version: 1.0.7
+        specifier: ^2.0.0
+        version: 2.0.0
       color-pen:
-        specifier: ^2.0.13
-        version: 2.0.13
+        specifier: ^3.0.0
+        version: 3.0.0
 
   packages/env: {}
 
@@ -909,6 +909,10 @@ packages:
 
   '@qqi/log@0.1.1':
     resolution: {integrity: sha512-YgV7eGXO20dyiSTMPecajfS9qvbfjlQOsKhUprB0MtTxtylj0BueWoexVMQ82ioglHdlIkgwPS5OJg7jmVRiSQ==}
+    engines: {node: '>=18.0.0'}
+
+  '@qqi/log@1.0.0':
+    resolution: {integrity: sha512-11UaHaN3KDOJg9wJtvVlYHU7p01WnFMArUBkC4wHEPM2+9js+lGLh8Iawo3O4mzcSk5nyV71N/Mm1pNEVNW6jg==}
     engines: {node: '>=18.0.0'}
 
   '@qqi/rollup-external@1.0.11':
@@ -3361,6 +3365,13 @@ snapshots:
       a-js-tools: 1.0.12
       a-type-of-js: 1.1.0
       color-pen: 2.0.13
+
+  '@qqi/log@1.0.0':
+    dependencies:
+      '@color-pen/static': 1.1.1
+      a-js-tools: 2.0.1
+      a-type-of-js: 2.0.0
+      color-pen: 3.0.0
 
   '@qqi/rollup-external@1.0.11':
     dependencies:
