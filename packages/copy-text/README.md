@@ -4,7 +4,7 @@
 
 仅支持 windows、macOs 的 node 环境
 
-[qqi](https://github.com/earthnutDev/qqi) 下都是小众的模块，且更新频率较低
+[qqi](https://github.com/MrMudBean/qqi) 下都是小众的模块，且更新频率较低
 
 ## 安装
 

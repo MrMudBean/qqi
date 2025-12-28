@@ -1,4 +1,4 @@
-import { copyTextToClipboard } from '..';
+import { copyTextToClipboard } from '../src';
 
 const result = copyTextToClipboard('46');
 

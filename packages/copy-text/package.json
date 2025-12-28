@@ -1,9 +1,7 @@
 {
   "name": "@qqi/copy-text",
   "type": "module",
-  "version": "1.0.7",
-  "description": "node 环境文本复制文本到剪切板 📋",
-  "license": "MIT",
+  "version": "1.1.0",
   "scripts": {
     "b": "rollup --config rollup.config.js && tsc -p tsconfig.types.json",
     "clean:package-json": "node ./scripts/clean-package-json.js",
@@ -19,7 +17,7 @@
     "test": "jja cls && rollup --config rollup.config.eg.js && node .eg/index.mjs"
   },
   "dependencies": {
-    "a-js-tools": "^1.0.10",
-    "a-node-tools": "^4.2.19"
+    "a-js-tools": "^2.0.1",
+    "a-node-tools": "^4.3.0"
   }
 }

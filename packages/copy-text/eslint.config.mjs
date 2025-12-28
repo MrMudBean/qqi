@@ -1,14 +1,36 @@
 import globals from 'globals';
-import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import eslint from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
+import tseslint from 'typescript-eslint';
 
 export default [
-  { files: ['index.{ts}'] },
-  { languageOptions: { globals: globals.browser } },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
+  // 基础 JS 规则（仅应用于 JS/JSX）
+  {
+    files: ['src/**/*.{js,jsx}', 'scripts/**/*.{js,jsx}', 'rollup.config.js'],
+    // 基础的 eslint 推荐规则（适用于所有文件）
+    ...eslint.configs.recommended,
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
+  },
+  // TS/JS 专属配置
+  ...tseslint.configs.recommended.map(config => ({
+    ...config,
+    files: ['src/**/*.{ts,tsx}'],
+    languageOptions: {
+      ...config.languageOptions,
+      globals: globals.browser,
+      parserOptions: {
+        ...config.languageOptions?.parserOptions,
+        project: './tsconfig.rollup.json', // 类型感知规则
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  })),
   {
     plugins: {
       jsdoc: jsdocPlugin,
