@@ -1,4 +1,4 @@
-import { external } from '../index';
+import { external } from '../src/index';
 
 external({
   ignore: ['ignore', 'color'],

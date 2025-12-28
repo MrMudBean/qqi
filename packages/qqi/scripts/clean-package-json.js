@@ -33,7 +33,7 @@ packageJson = {
     email: 'Mr.MudBean@outlook.com',
     url: 'https://earthnut.dev',
   },
-  description: '用于 rollup 打包 📦 时排除异己的工具 🔧',
+  description: '简单的文件读写',
   sideEffects: false, // 核心：开启 Tree Shaking
   license: 'MIT',
   files: [cjsPrefix, esPrefix, 'LICENSE', 'README.md'],
@@ -45,8 +45,8 @@ packageJson = {
       types: `./${dtsPrefix}/index.d.ts`,
     },
   },
-  keywords: ['rollup-external', 'rollup', 'external', '打包', '依赖', '排除'],
-  homepage: 'https://earthnut.dev/npm/qqi/rollup-external',
+  keywords: ['qqi', '文件读写', '数据储存'],
+  homepage: 'https://earthnut.dev/npm/qqi/core',
   dependencies,
   bugs: {
     url: 'https://github.com/MrMudBean/qqi/issues',
@@ -55,7 +55,7 @@ packageJson = {
   repository: {
     type: 'git',
     url: 'git+https://github.com/MrMudBean/qqi.git',
-    directory: 'packages/rollup-external',
+    directory: 'packages/qqi',
   },
   publishConfig: {
     access: 'public',

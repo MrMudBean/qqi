@@ -1,11 +1,10 @@
 {
-  // 打包类型文件用配置
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": ".",
     "emitDeclarationOnly": true,
     "declaration": true,
-    "declarationDir": "dist/es"
+    "declarationDir": "./dist/es"
   },
   "exclude": [
     "node_modules",

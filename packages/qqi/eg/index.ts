@@ -1,4 +1,4 @@
-import { QQI } from '../src/core';
+import { QQI } from '../src';
 
 const qqi = new QQI('test');
 

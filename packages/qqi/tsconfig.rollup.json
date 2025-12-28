@@ -1,9 +1,15 @@
 {
   "extends": "./tsconfig.types.json",
   "compilerOptions": {
+    "rootDir": ".",
     "declarationDir": null,
     "declaration": false
   },
-  "include": ["src", "eg"],
-  "exclude": [".eg"]
+  "include": [
+    "src",
+    "eg"
+  ],
+  "exclude": [
+    ".eg"
+  ]
 }

@@ -63,4 +63,4 @@ console.log(qqi.getPath('test'));
 
 ## 文档地址
 
-[qqi](https://earthnut.dev/npm/qqi/core)
+[qqi](https://earthnut.dev/npm/qqi/qqi)
