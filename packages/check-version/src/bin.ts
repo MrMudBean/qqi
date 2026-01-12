@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 import {
   getNpmPkgInfo,
   fileExist,
@@ -9,7 +10,7 @@ import {
   getDirectoryBy,
 } from 'a-node-tools';
 import { isUndefined, isNull } from 'a-type-of-js';
-import { Command } from 'a-command';
+import { Args } from 'a-command';
 
 /**  从版本号中解析到 dist tag  */
 const getTag = (version: string): string => {
@@ -23,7 +24,7 @@ const getTag = (version: string): string => {
   return 'latest';
 };
 
-const command = new Command<{
+const command = new Args<{
   cwd: undefined;
   name: undefined;
   skip: undefined;

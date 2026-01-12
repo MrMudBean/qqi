@@ -1,24 +1,19 @@
 {
   "name": "@qqi/check-version",
   "type": "module",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "private": true,
-  "description": "一个检测工作目录下 packages 文件夹下子 npm 包版本是否存在的模块",
-  "license": "MIT",
+
   "scripts": {
     "build": "jja rm dist && rollup --config rollup.config.js && node ./scripts/clean-package-json.js",
     "diff": "jja package --diff",
     "dev": "jja rm dist && pnpm run build && chmod +x dev.sh && ./dev.sh",
+    "push":"gvv",
+    "push:version":"gvv",
     "eslint": "jja cls && eslint src",
     "beautify": "pnpm run prettier",
     "prettier": "jja cls && prettier . --write",
     "vjj": "vjj",
     "test": "jja cls &&  pnpm run build && node dist/bin.mjs"
-  },
-  "dependencies": {
-    "a-command": "^2.3.13",
-    "a-js-tools": "^1.0.10",
-    "a-node-tools": "^4.2.19",
-    "a-type-of-js": "^1.0.7"
   }
 }

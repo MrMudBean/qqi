@@ -5,7 +5,7 @@
 ## 安装
 
 ```bash
-npm install --save @qqi/check-version
+npm install --save-dev @qqi/check-version
 ```
 
 ## 使用
