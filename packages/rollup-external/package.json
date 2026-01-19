@@ -1,7 +1,7 @@
 {
   "name": "@qqi/rollup-external",
   "type": "module",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "scripts": {
     "b": "rollup --config rollup.config.js && tsc -p tsconfig.types.json",
     "clean:package-json": "node ./scripts/clean-package-json.js",
@@ -19,7 +19,7 @@
   "dependencies": {
     "@qqi/copy-text": "^1.1.0",
     "@qqi/log": "^1.0.0",
-    "a-node-tools": "^4.3.0",
+    "a-node-tools": "^4.4.2",
     "a-type-of-js": "^2.0.0",
     "color-pen": "^3.0.0"
   }

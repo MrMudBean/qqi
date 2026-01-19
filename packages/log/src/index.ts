@@ -9,39 +9,26 @@ import { esc } from '@color-pen/static';
 
 /**
  *
- * 创建 dev log 工厂函数
+ * @param options 配置项
+ * @returns 函数对象
  *
+ */
+const DogConstructor = createConstructor(Dog);
+
+export { DogConstructor as Dog };
+
+export type { DevLogType, DevLog } from './type';
+
+/**
+ * ## 创建 dev log 工厂函数
  * @param options - 配置项
  * @returns - dev log 工厂函数
  */
 function Dog(this: DevLog, options?: DogOptions): DevLog {
-  if (isUndefined(options))
-    options = {
-      name: getRandomString(10),
-      type: false,
-    };
-  if (isBoolean(options))
-    options = {
-      name: getRandomString(10),
-      type: options,
-    };
-  if (isString(options))
-    options = {
-      name: options,
-      type: false,
-    };
-  let { name = '', type = false } = options;
-  // 处理 name
-  name = name.trim().replace(/\s+/g, '_');
-  /**  当前获取环境值  */
-  const _env =
-    (platform === 'node' &&
-      (globalThis?.process.env[name.toUpperCase().concat('_DEV')] ??
-        globalThis?.process.env[name.toLowerCase().concat('_dev')])) ||
-    false;
-  const env =
-    _env === 'false' ? false : _env === 'true' ? true : (_env as DevLogType);
-
+  const _option = parseOption(options);
+  const name = _option.name || '';
+  let type = _option.type || false;
+  const env = getEnv(name);
   /**  默认 node 环境以获取到的环境值为准，而非 node 环境默认开启，并通过自定义的 @qqi/babel-plugin-remove-dog-calls 来进行过滤正式环境（环境值需要自定义） */
   type = platform === 'node' ? setType(env ?? type) : true;
 
@@ -94,7 +81,7 @@ function Dog(this: DevLog, options?: DogOptions): DevLog {
 
   return dog as unknown as DevLog;
 }
-
+/** 原型上添加 clear 方法 */
 Dog.prototype.clear = () => {
   if (platform === 'browser') {
     console.clear();
@@ -104,13 +91,51 @@ Dog.prototype.clear = () => {
 };
 
 /**
- *
- * @param options 配置项
- * @returns 函数对象
- *
+ * ## 解析参数
  */
-const DogConstructor = createConstructor(Dog);
+function parseOption(options?: DogOptions): {
+  name?: string;
+  type?: DevLogType;
+} {
+  const result = {
+    name: getRandomString(10),
+    type: false,
+  };
+  if (isUndefined(options)) return result;
+  if (isBoolean(options)) {
+    result.type = options;
+    return result;
+  }
+  if (isString(options)) {
+    // 处理 name
+    result.name = options.trim().replace(/\s+/g, '_');
+    return result;
+  }
+  if (isString(options.name)) {
+    return {
+      ...result,
+      name: options.name.trim().replace(/\s+/g, '_'),
+    };
+  }
+  return options;
+}
 
-export { DogConstructor as Dog };
+/**
+ * 获取当前的环境变量
+ */
+function getEnv(name: string = getRandomString(10)): DevLogType {
+  /**  当前获取环境值  */
+  let _env: boolean | string = false;
 
-export type { DevLogType, DevLog } from './type';
+  if (platform === 'node' && globalThis?.process?.env) {
+    const processEnv = process.env;
+    _env =
+      processEnv[name.toUpperCase().concat('_DEV')] ||
+      processEnv[name.toLowerCase().concat('_dev')] ||
+      false;
+  }
+
+  const env =
+    _env === 'false' ? false : _env === 'true' ? true : (_env as DevLogType);
+  return env;
+}
