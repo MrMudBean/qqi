@@ -14,11 +14,11 @@ export function preserveDirective() {
       let match;
       let firstDirective = null;
       while ((match = directiveRegex.exec(code)) !== null) {
-        console.log(match);
+        // console.log(match);
         if (!firstDirective) firstDirective = match[1]; // 取首个有效指令
         break;
       }
-      console.log(firstDirective);
+      // console.log(firstDirective);
       if (firstDirective) {
         directiveMap.set(id, firstDirective);
         return code.replace(firstDirective, ''); // 暂时移除指令

@@ -16,12 +16,16 @@ npm install --save-dev @qqi/rollup-preserve-directive
 
 ```js
 import { preserveDirective } from '@qqi/rollup-preserve-directive';
+
 export default {
   // ... 其他配置
+
   plugins: [
     preserveDirective(), // 保留 `use client/server` 指令且不报错
+
     // ... 其他插件
   ],
+
   // ... 其他配置
 };
 ```
