@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
     "rootDir": ".",
     "jsx": "preserve",
     "strict": true,
@@ -9,10 +10,7 @@
     "esModuleInterop": true,
     "moduleResolution": "Bundler",
     "allowSyntheticDefaultImports": true,
-    "lib": [
-      "ESNext",
-      "DOM"
-    ],
+    "lib": ["ESNext", "DOM"],
     "sourceMap": false
   }
 }
