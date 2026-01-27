@@ -1,4 +1,4 @@
-import { Dog } from '../src';
+import { Dog } from '../src/core';
 
 const dog = new Dog({
   name: 'dev',
