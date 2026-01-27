@@ -1,11 +1,8 @@
-import { createConstructor, getRandomString } from 'a-js-tools';
-import { DevLog, DevLogType, DogOptions, PrivateFunc } from './type';
-import { setType } from './setType';
-import { blankCall } from './blankCall';
-import { managePrint } from './managePrint';
-import { isBoolean, isString, isUndefined } from 'a-type-of-js';
-import { platform } from './platform';
 import { esc } from '@color-pen/static';
+import { createConstructor } from 'a-js-tools';
+import { Data } from './class-data';
+import { DevLog, DevLogType, DogOptions } from './type';
+import { platform } from './util';
 
 /**
  *
@@ -25,26 +22,15 @@ export type { DevLogType, DevLog } from './type';
  * @returns - dev log 工厂函数
  */
 function Dog(this: DevLog, options?: DogOptions): DevLog {
-  const _option = parseOption(options);
-  const name = _option.name || '';
-  let type = _option.type || false;
-  const env = getEnv(name);
-  /**  默认 node 环境以获取到的环境值为准，而非 node 环境默认开启，并通过自定义的 @qqi/babel-plugin-remove-dog-calls 来进行过滤正式环境（环境值需要自定义） */
-  type = platform === 'node' ? setType(env ?? type) : true;
-
+  const data = new Data(options);
   /// 原始的调用方法，在 type 值变化时会触发该值的更替
-  // 私有方法 error
-  const _privateFunc: PrivateFunc = {
-    error: blankCall,
-    warn: blankCall,
-    info: blankCall,
-  };
 
-  managePrint(type, _privateFunc, name);
-
-  /**  本体方法  */
+  /**
+   *  本体方法
+   * @param str
+   */
   const dog = (...str: unknown[]) => {
-    Reflect.apply(_privateFunc.info, this, str);
+    data.info(str);
   };
 
   // 设置 prototype
@@ -54,25 +40,28 @@ function Dog(this: DevLog, options?: DogOptions): DevLog {
   Object.defineProperties(this, {
     type: {
       get() {
-        return type || false;
+        return data.type;
       },
       set(value: DevLogType) {
-        const new_type = setType(value);
-        if (new_type !== type) {
-          type = new_type;
-          managePrint(type, _privateFunc, name);
-        }
+        data.type = value;
+      },
+    },
+    fold: {
+      get() {
+        return data.fold;
+      },
+      set(value: boolean | undefined) {
+        data.fold = Boolean(value);
       },
     },
     error: {
-      value: (...str: unknown[]) =>
-        Reflect.apply(_privateFunc.error, this, str),
+      value: (...str: unknown[]) => data.error(str),
       configurable: false,
       enumerable: false,
       writable: false,
     },
     warn: {
-      value: (...str: unknown[]) => Reflect.apply(_privateFunc.warn, this, str),
+      value: (...str: unknown[]) => data.warn(str),
       configurable: false,
       enumerable: false,
       writable: false,
@@ -91,51 +80,47 @@ Dog.prototype.clear = () => {
 };
 
 /**
- * ## 解析参数
+ *
  */
-function parseOption(options?: DogOptions): {
-  name?: string;
-  type?: DevLogType;
-} {
-  const result = {
-    name: getRandomString(10),
-    type: false,
-  };
-  if (isUndefined(options)) return result;
-  if (isBoolean(options)) {
-    result.type = options;
-    return result;
-  }
-  if (isString(options)) {
-    // 处理 name
-    result.name = options.trim().replace(/\s+/g, '_');
-    return result;
-  }
-  if (isString(options.name)) {
-    return {
-      ...result,
-      name: options.name.trim().replace(/\s+/g, '_'),
-    };
-  }
-  return options;
+function DogVirtualImt(this: DevLog): DevLog {
+  /**
+   *  模拟类的构建
+   * @param _arg
+   */
+  const _dev = (..._arg: any[]) => {};
+
+  Object.setPrototypeOf(_dev, this);
+
+  Object.defineProperties(this, {
+    info: {
+      value: (..._: unknown[]) => {},
+      configurable: false,
+      writable: false,
+    },
+    warn: {
+      value: (..._: unknown[]) => {},
+      configurable: false,
+      writable: false,
+    },
+    error: {
+      value: (..._: unknown[]) => {},
+      configurable: false,
+      writable: false,
+    },
+    type: {
+      get() {
+        return false;
+      },
+      set(_: any) {},
+    },
+  });
+
+  return _dev as DevLog;
 }
 
-/**
- * 获取当前的环境变量
- */
-function getEnv(name: string = getRandomString(10)): DevLogType {
-  /**  当前获取环境值  */
-  let _env: boolean | string = false;
+DogVirtualImt.prototype.clear = console.clear;
 
-  if (platform === 'node' && globalThis?.process?.env) {
-    const processEnv = process.env;
-    _env =
-      processEnv[name.toUpperCase().concat('_DEV')] ||
-      processEnv[name.toLowerCase().concat('_dev')] ||
-      false;
-  }
+/** 虚拟狗，没有实现不打印 */
+const DogVirtualConstructor = createConstructor(DogVirtualImt);
 
-  const env =
-    _env === 'false' ? false : _env === 'true' ? true : (_env as DevLogType);
-  return env;
-}
+export { DogVirtualConstructor as DogVirtual };

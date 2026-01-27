@@ -8,7 +8,7 @@
  * @copyright 2026 ©️ MrMudBean
  * @since 2026-01-26 20:30
  * @version 0.0.0
- * @lastModified 2026-01-27 10:13
+ * @lastModified 2026-01-27 22:50
  */
 
 import type { Middleware } from './types';

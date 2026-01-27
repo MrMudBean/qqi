@@ -32,6 +32,16 @@ dog('你好'); // 该值是否打印还依赖于环境变量中有没有配置 `
 a_node_tools_dev=true npm run dev
 ```
 
+### 折叠同名方法打印消息
+
+使用 `fold` 参数 :
+
+```js
+import { Dog } from '@qqi/log';
+
+const dog = Dog();
+```
+
 ## 文档地址
 
 参看 [https://earthnut.dev/npm/qqi/log](https://earthnut.dev/npm/qqi/log)
