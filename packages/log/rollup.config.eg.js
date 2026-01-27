@@ -8,7 +8,7 @@ import { external } from '@qqi/rollup-external';
 /** 生成  npm 文件的打包配置文件 */
 export default {
   input: './eg/index.ts',
-  output:{
+  output: {
     format: 'es',
     entryFileNames: '[name].mjs',
     preserveModules: false,
@@ -23,11 +23,7 @@ export default {
     commonjs(),
     // 可打包 json 内容
     json(),
-    
-typescript({
-tsconfig: './tsconfig.rollup.json',
-}),
-
+    typescript({}),
     // 去除无用代码
     cleanup(),
   ],

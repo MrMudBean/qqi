@@ -1,6 +1,6 @@
 import { esc } from '@color-pen/static';
 import { createConstructor, getRandomString } from 'a-js-tools';
-import { bgBlackPen, bgBrightYellowPen, bgCyanPen } from 'color-pen';
+import { bgBlackPen, bgBrightYellowPen, bgCyanPen, colorText } from 'color-pen';
 import { DevLog, DevLogType, DogOptions } from './type';
 import { getEnv, parseOption, platform, setType } from './util';
 
@@ -85,15 +85,18 @@ function Dog(this: DevLog, options?: DogOptions): DevLog {
       }
 
       this.mark = mark;
-      return `${printStartPenStr} ${mark}  ${res?.line?.concat(' 行')} ${res?.column?.concat(' 列')}`;
+      const msg = `${printStartPenStr} ${mark}  ${res?.line?.concat(' 行')} ${res?.column?.concat(' 列')}`;
+
+      return colorText(msg);
     }
   };
 
-  this.info = (...msg: unknown[]) => {
+  this.info = (...arg) => {
     if (this.type === 'all' || this.type === 'info' || this.type === true) {
       const _prefix = prefix('info');
-      msg.unshift(_prefix);
-      console.log.apply(console, msg);
+      console.log(..._prefix);
+      console.log(...arg);
+      // console.log.apply(console, arg);
     }
   };
 
@@ -103,7 +106,7 @@ function Dog(this: DevLog, options?: DogOptions): DevLog {
   this.warn = (...msg: unknown[]) => {
     if (this.type === 'all' || this.type === 'warn' || this.type === true) {
       const _prefix = prefix('warn');
-      msg.unshift(_prefix);
+      console.log(..._prefix);
       console.warn.apply(console, msg);
     }
   };
@@ -115,7 +118,7 @@ function Dog(this: DevLog, options?: DogOptions): DevLog {
   this.error = (...msg: unknown[]) => {
     if (this.type === 'all' || this.type === 'error' || this.type === true) {
       const _prefix = prefix('error');
-      msg.unshift(_prefix);
+      console.log(..._prefix);
       console.error.apply(console, msg);
     }
   };
@@ -125,7 +128,7 @@ function Dog(this: DevLog, options?: DogOptions): DevLog {
    * @param str
    */
   const dog = (...str: unknown[]) => {
-    this.info(str);
+    this.info(...str);
   };
 
   // 设置 prototype
