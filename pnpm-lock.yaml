@@ -278,6 +278,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
 
+  packages/reducer: {}
+
   packages/rollup-external:
     dependencies:
       '@qqi/copy-text':
@@ -313,6 +315,10 @@ importers:
       color-pen:
         specifier: ^3.0.0
         version: 3.0.0
+
+  packages/rollup-preserve-directive: {}
+
+  packages/rollup-preserve-directive/dist: {}
 
 packages:
 

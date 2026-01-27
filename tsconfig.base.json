@@ -10,6 +10,7 @@
     "esModuleInterop": true,
     "moduleResolution": "Bundler",
     "allowSyntheticDefaultImports": true,
+    "allowJs": true,
     "lib": ["ESNext", "DOM"],
     "sourceMap": false
   }
