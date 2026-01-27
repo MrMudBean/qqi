@@ -133,8 +133,20 @@ function Dog(this: DevLog, options?: DogOptions): DevLog {
 
   // 设置 prototype
   Object.setPrototypeOf(dog, this);
-
-  return dog as unknown as DevLog;
+  const _this = this;
+  return new Proxy(dog, {
+    get(target, p, receiver) {
+      if (p === 'apply') {
+        return target;
+      } else {
+        return Reflect.get(target, p, receiver);
+      }
+    },
+    set(_target, p, newValue) {
+      Reflect.set(_this, p, newValue); // 将要设置的值映射到 this 上而不是自身
+      return true;
+    },
+  }) as unknown as DevLog;
 }
 /** 原型上添加 clear 方法 */
 Dog.prototype.clear = () => {
