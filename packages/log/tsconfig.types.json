@@ -9,6 +9,7 @@
     // "types": ["node"],
   },
   "exclude": [
+    "scripts/",
     "node_modules",
     "dist",
     "**/*.test.ts",

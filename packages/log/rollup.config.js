@@ -20,15 +20,14 @@ export default {
     dir: `dist/${e}/`,
   })),
   // 配置需要排除的或包含包
-  external: external(),
+  external: external({
+    include: ['tslib'],
+  }),
   plugins: [
     resolve(),
     commonjs(),
     json(),
-    typescript({
-      tsconfig: './tsconfig.rollup.json',
-      exclude: ['node_modules', 'test'],
-    }),
+    typescript({}),
     // 去除无用代码
     cleanup(),
     copy({

@@ -8,7 +8,7 @@
  * @copyright 2026 ©️ MrMudBean
  * @since 2026-01-28 03:11
  * @version 1.0.1
- * @lastModified 2026-01-28 03:16
+ * @lastModified 2026-01-28 04:34
  */
 
 import { DevLogType } from '@qqi/log';
@@ -50,10 +50,8 @@ export function parseOption(options?: DogOptions): {
     return result;
   }
   if (isString(options.name)) {
-    return {
-      ...result,
-      name: options.name.trim().replace(/\s+/g, '_'),
-    };
+    result.name = options.name.trim().replace(/\s+/g, '_');
+    return result;
   }
   return options;
 }

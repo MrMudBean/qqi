@@ -2,7 +2,6 @@
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
     "rootDir": ".",
-    "jsx": "preserve",
     "strict": true,
     "target": "ESNext",
     "module": "ESNext",
@@ -12,6 +11,8 @@
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "lib": ["ESNext", "DOM"],
+    // 解决了 `The inferred type of 'default' cannot be named without a reference to '.pnpm/eslint@9.39.2/node_modules/eslint'. This is likely not portable. A type annotation is necessary.` 问题
+    "preserveSymlinks": true, // 推荐 pnpm 用户添加
     "sourceMap": false
   }
 }

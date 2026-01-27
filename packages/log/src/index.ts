@@ -1,8 +1,8 @@
 import { esc } from '@color-pen/static';
-import { createConstructor } from 'a-js-tools';
-import { Data } from './class-data';
+import { createConstructor, getRandomString } from 'a-js-tools';
+import { bgBlackPen, bgBrightYellowPen, bgCyanPen } from 'color-pen';
 import { DevLog, DevLogType, DogOptions } from './type';
-import { platform } from './util';
+import { getEnv, parseOption, platform, setType } from './util';
 
 /**
  *
@@ -22,51 +22,116 @@ export type { DevLogType, DevLog } from './type';
  * @returns - dev log 工厂函数
  */
 function Dog(this: DevLog, options?: DogOptions): DevLog {
-  const data = new Data(options);
-  /// 原始的调用方法，在 type 值变化时会触发该值的更替
+  const _p = parseOption(options);
+  this.name = _p.name || getRandomString(12);
+  this.fold = Boolean(_p.fold);
+  const env = getEnv(this.name);
+  let type = _p.type || false;
+  this.mark = '';
+  /**  默认 node 环境以获取到的环境值为准，而非 node 环境默认开启，并通过自定义的 @qqi/babel-plugin-remove-dog-calls 来进行过滤正式环境（环境值需要自定义） */
+  this.type = platform === 'node' ? setType(env ?? type) : true;
+
+  /**
+   * ## 解析 error
+   * @param type
+   */
+  const prefix = (type: DevLogType) => {
+    try {
+      throw new Error();
+    } catch (error) {
+      const parseErrorResult = ((error as Error).stack?.split('\n') || []).map(
+        item => {
+          const reg = /at\s(.*)\s\((.*):(\d*):(\d*)\)/;
+          const res = reg.exec(item);
+          if (res) {
+            return {
+              name: res[1],
+              path: res[2],
+              line: res[3],
+              column: res[4],
+            };
+          }
+          return {
+            name: '',
+          };
+        },
+      );
+
+      const result = parseErrorResult.filter(
+        e => e.name !== '' && e.path !== undefined,
+      );
+
+      const res = result[3] ?? result[2] ?? result[1] ?? result[0];
+
+      const startStr = ` ${type === 'info' ? '💡' : type === 'error' ? '❌' : '⚠️ '} ${new Date().toLocaleString()} `;
+
+      const printStartPenStr = (
+        type === 'info'
+          ? bgCyanPen.brightWhite
+          : type === 'error'
+            ? bgBlackPen.red
+            : bgBrightYellowPen.brightGreen
+      )(startStr);
+
+      const mark = res?.name ?? '';
+
+      if (this.fold && mark) {
+        if (mark === this.mark) {
+          // 不处理
+        } else {
+          if (this.mark) {
+            console.groupEnd();
+          }
+          console.groupCollapsed(mark);
+        }
+      }
+
+      this.mark = mark;
+      return `${printStartPenStr} ${mark}  ${res?.line?.concat(' 行')} ${res?.column?.concat(' 列')}`;
+    }
+  };
+
+  this.info = (...msg: unknown[]) => {
+    if (this.type === 'all' || this.type === 'info' || this.type === true) {
+      const _prefix = prefix('info');
+      msg.unshift(_prefix);
+      console.log.apply(console, msg);
+    }
+  };
+
+  /**
+   * @param msg
+   */
+  this.warn = (...msg: unknown[]) => {
+    if (this.type === 'all' || this.type === 'warn' || this.type === true) {
+      const _prefix = prefix('warn');
+      msg.unshift(_prefix);
+      console.warn.apply(console, msg);
+    }
+  };
+
+  /**
+   *
+   * @param msg
+   */
+  this.error = (...msg: unknown[]) => {
+    if (this.type === 'all' || this.type === 'error' || this.type === true) {
+      const _prefix = prefix('error');
+      msg.unshift(_prefix);
+      console.error.apply(console, msg);
+    }
+  };
 
   /**
    *  本体方法
    * @param str
    */
   const dog = (...str: unknown[]) => {
-    data.info(str);
+    this.info(str);
   };
 
   // 设置 prototype
   Object.setPrototypeOf(dog, this);
-
-  // 设置属性和方法
-  Object.defineProperties(this, {
-    type: {
-      get() {
-        return data.type;
-      },
-      set(value: DevLogType) {
-        data.type = value;
-      },
-    },
-    fold: {
-      get() {
-        return data.fold;
-      },
-      set(value: boolean | undefined) {
-        data.fold = Boolean(value);
-      },
-    },
-    error: {
-      value: (...str: unknown[]) => data.error(str),
-      configurable: false,
-      enumerable: false,
-      writable: false,
-    },
-    warn: {
-      value: (...str: unknown[]) => data.warn(str),
-      configurable: false,
-      enumerable: false,
-      writable: false,
-    },
-  });
 
   return dog as unknown as DevLog;
 }
