@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.rollup.json",
+  "compilerOptions": {
+    "declaration": true, // 生成类型文件
+    "declarationDir": "dist/es",
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    "rootDir": "."
+  },
+  "include": ["src/"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "eg", "jest.setup.ts"]
+}
