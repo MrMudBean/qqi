@@ -11,6 +11,7 @@
     "node_modules",
     "dist",
     "**/*.test.ts",
-    "packages/**/.eg"
+    "packages/**/.eg",
+    "packages/**/dist"
   ]
 }

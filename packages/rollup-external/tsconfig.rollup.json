@@ -1,7 +1,10 @@
 {
-  "extends": "./tsconfig.types.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "rootDir": ".",
     "declarationDir": null,
     "declaration": false
-  }
+  },
+  "include": ["eg", "src"],
+  "exclude": [".eg", "dist", "node_modules"]
 }

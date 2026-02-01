@@ -51,7 +51,7 @@ export default [
   // 2. TypeScript 配置（必须）
   ...tseslint.configs.recommended.map(config => ({
     ...config,
-    files: ['src/**/*.{ts,tsx}'], // 按需配置
+    files: ['src/**/*.{ts,tsx}', 'eg/**/*.{ts,js}'], // 按需配置
     // ignores: ignorePattern,
     languageOptions: {
       ...config.languageOptions,

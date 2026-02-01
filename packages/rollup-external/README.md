@@ -43,6 +43,16 @@ export default {
 - `ignore` 用于忽略那些不包含于 'package.json' 的 `dependencies` 中却需要被排除的依赖，如 `node:`、`src/` 等路径的依赖。校验时以输入的字符串的 `startWith` 判断
 - 可直接不使用参数，如果仅是想排除 'package.json' 文件中 `dependencies` 配置依赖 （怎么感觉有一股翻译腔）
 
+### 第二参数
+
+第二参数可控制在使用时在控制台展示简易日志。
+
+第二参数可接受的类型
+
+- `boolean` ： 为 `true` 将为每一个引入打印简易日志
+- `string` ： 将使用 `id.includes(str)` 的方式判定是否打印该条简易日志
+- `string[]` ：将为数组中的每一项使用 `id.includes(str)` 判定
+
 ## 文档地址
 
 [@qqi/rollup-external](https://earthnut.dev/npm/qqi/rollup-external)

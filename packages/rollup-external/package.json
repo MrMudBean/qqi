@@ -1,7 +1,7 @@
 {
   "name": "@qqi/rollup-external",
   "type": "module",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "scripts": {
     "b": "rollup --config rollup.config.js && tsc -p tsconfig.types.json",
     "clean:package-json": "node ./scripts/clean-package-json.js",
@@ -14,11 +14,11 @@
     "push:version": "gvv",
     "push": "gvv",
     "dev": "pnpm test",
-    "test": "jja cls rm .eg && pnpm tsc  && jja run qqi_rollup_external_dev=false  rollup --config rollup.config.eg.js"
+    "test": "jja cls rm .eg  && rollup --config rollup.config.eg.js && node ./.eg/index.js"
   },
   "dependencies": {
     "@qqi/copy-text": "^1.1.0",
-    "@qqi/log": "^1.0.0",
+    "@qqi/log": "^1.1.3",
     "a-node-tools": "^4.4.2",
     "a-type-of-js": "^2.0.0",
     "color-pen": "^3.0.0"

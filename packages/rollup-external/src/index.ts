@@ -1,5 +1,4 @@
 import { copyTextToClipboard } from '@qqi/copy-text';
-import { Dog } from '@qqi/log';
 import {
   getPackageJsonSync,
   _p,
@@ -16,31 +15,37 @@ import {
   isEmptyArray,
   isArray,
 } from 'a-type-of-js';
-import { bgRedPen, cyanPen, hexPen } from 'color-pen';
+import {
+  bgBlackPen,
+  bgRedPen,
+  brightYellowPen,
+  cyanPen,
+  hexPen,
+  magentaPen,
+  reversedPen,
+} from 'color-pen';
 
 /**  一个展示 🖊️  */
 const pen = bgRedPen.blink.bold.yellow;
 
-const dog = new Dog({
-  name: 'qqi rollup external',
-  type: false,
-});
-
 /**
- *
- * 依赖配置
+ * ## 依赖配置
  *
  * - `include` 包含的包（想打包入结果的包）。优先级最高（譬如：src/ 这种需要 rollup 处理的）
  * - `ignore`  在排除的包却不需要在 dependencies 中的包，如: `node:stream` 等
  * - `exclude`  排除且在依赖项中的包（在构建发布后，不会因为依赖项缺失而导致包版本失效）
  *
- * 注： `exclude` 是使用完全
+ * 注： `exclude` 是使用完全（<span style="color:#ff0;">Object.is()</span>）匹配模式
  *
  * @param options 配置项参数
  * @param options.exclude 排除项，该项将默认包含 "package.json" 文件中的 `dependencies` 及 `peerDependencies` 的依赖包（包在忽略时使用 `Object.is` 比较）
  * @param options.ignore 忽略项，该项与 `exclude` 类似，但是
  * @param options.include
- * @param logInfo
+ * @param logInfo 第二参数，可传入 `boolean`、`string`、`string[]` 类型，用户查看简单日志
+ *        - 当传入为 `true` 时，所有的引入项都将打印日志
+ *        - 当传入为单个字符串时，会打印包含该字符串的引入的日志（模糊匹配）
+ *        - 当传入为字符串数组时，会分别打印包含对应字符串的引入的日志（模糊匹配）
+ *
  */
 export function external(
   options?: {
@@ -55,11 +60,18 @@ export function external(
     include?: string[] | string;
   },
   /** 打印消息 */
-  logInfo: boolean = false,
+  logInfo: boolean | string | string[] = false,
 ) {
-  if (logInfo) dog.type = true;
+  let logGlobal = false;
+  if (isString(logInfo)) logInfo = [logInfo];
+  if (logInfo === true || (isArray(logInfo) && logInfo.length > 0)) {
+    logGlobal = true;
+  }
   const { exclude, ignore, include } = parseParameter(options);
-  dog('当前的工作路径', process.cwd());
+  const cwd = process.cwd();
+  if (logGlobal) {
+    console.log('当前的工作路径：', reversedPen(cwd));
+  }
   const packageContent = getPackageJsonSync();
   if (isNull(packageContent) || !packageContent?.content?.name)
     throw new RangeError('package.json 文件不存在');
@@ -79,25 +91,55 @@ export function external(
   const excludedRegExp = new RegExp(
     '^'.concat([...ignorePkg, ...excludedPkg].join('|^')),
   );
-  dog('排除的包', excludedPkg);
-  dog('执行校验的数组', excludedRegExp);
+  if (logGlobal) {
+    console.log('排除的包', excludedPkg);
+    console.log('执行校验的数组', excludedRegExp);
+  }
+
+  const beforeEnd = (isLog: boolean) =>
+    isLog && (console.log(), console.groupEnd());
   // 实际执行的方法
-  return (id: string) => {
-    dog('本次检测的 id', id);
-    const cwd = process.cwd();
-    dog('当前执行的路径', cwd);
-    dog('当前提供的 id 是否为文件', fileExist(pathJoin(cwd, id)));
+  return (id: string, parentId: string | undefined, isHandle: boolean) => {
+    /** 是否可打印 */
+    const isLog =
+      logInfo === true ||
+      (isArray(logInfo) && logInfo.some(e => id?.includes(e)));
+    if (isLog) {
+      console.log();
+      console.groupCollapsed('本次检测的 id：', magentaPen(id));
+      console.log(
+        '当前提供的 id 是否为文件',
+        fileExist(pathJoin(cwd, id)) ? '✅' : '❌',
+      );
+      console.log(
+        `该 id（${cyanPen(id)}）是否为文件：${fileExist(pathJoin(cwd, id)) ? '✅' : '❌'}`,
+      );
+      parentId &&
+        console.log(
+          `该 id（${cyanPen(id)}）调用父级：${brightYellowPen(parentId)}`,
+        );
+      console.log(`该 id（${cyanPen(id)}）是否已处理：${bgBlackPen(isHandle)}`);
+    }
     if (id.startsWith(cwd) && fileExist(id)) {
-      dog('是存在的绝对路径的文件');
+      if (isLog) {
+        console.log('是存在的绝对路径的文件');
+      }
+      beforeEnd(isLog);
       return false;
     } else if (fileExist(pathJoin(cwd, id))) {
-      dog('是存在的相对路径的文件');
+      if (isLog) {
+        console.log('是存在的相对路径的文件');
+      }
+      beforeEnd(isLog);
       return false;
     }
 
     if (include.includes(id)) {
       // 包存在于 included 中，直接交给 rollup 处理
-      dog(`${cyanPen(id)} 被显式声明打包`);
+      if (isLog) {
+        console.log(`${cyanPen(id)} 被显式声明打（进）包`);
+      }
+      beforeEnd(isLog);
       return false;
     }
     // 重制识别位置
@@ -112,7 +154,9 @@ export function external(
         ignorePkg.every(e => !id.startsWith(e))
       ) {
         const msg = `${pen(id)} ${copy(id)} 依赖被排除打包却未在 package.json 中配置`;
-        dog.error(msg);
+        if (isLog) {
+          console.error(msg);
+        }
         _p(msg);
         process.exit(1);
       }
@@ -120,10 +164,13 @@ export function external(
     // 包不存在于配置中，但是却是非本地包
     else if (/^[^./]/g.test(id)) {
       const msg = `${pen(id)}  ${copy(id)}  依赖未被排除，打包关闭`;
-      dog.error(msg);
+      if (isLog) {
+        console.error(msg);
+      }
       _p(msg);
       process.exit(1);
     }
+    beforeEnd(isLog);
     return result;
   };
 }

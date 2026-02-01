@@ -1,25 +1,21 @@
-import typescript from '@rollup/plugin-typescript';
+import typescript from 'rollup-plugin-typescript2';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import cleanup from 'rollup-plugin-cleanup';
-import { external } from './.eg/index.js';
 
 export default {
-  input: 'eg/index.ts',
+  input: './eg/index.ts',
   output: [
     {
       format: 'es',
-      entryFileNames: 'index.mjs',
+      entryFileNames: 'index.js',
       preserveModules: false,
       sourcemap: false,
       exports: 'named',
       dir: '.eg/',
     },
   ],
-  external: external({
-    include: ['eg/index.ts'],
-  }),
   plugins: [
     resolve(),
     commonjs(),
@@ -27,6 +23,7 @@ export default {
     json(),
     typescript({
       tsconfig: './tsconfig.rollup.json',
+      clean: true,
     }),
     cleanup(),
   ],

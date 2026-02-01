@@ -108,8 +108,8 @@ importers:
         specifier: ^4.3.0
         version: 4.3.0(@typescript-eslint/eslint-plugin@8.54.0(@typescript-eslint/parser@8.54.0(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2)
       globals:
-        specifier: ^17.2.0
-        version: 17.2.0
+        specifier: ^17.3.0
+        version: 17.3.0
       gvv:
         specifier: ^1.0.0
         version: 1.0.0
@@ -289,8 +289,8 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       '@qqi/log':
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: ^1.1.3
+        version: 1.1.3
       a-node-tools:
         specifier: ^4.4.2
         version: 4.4.2
@@ -334,7 +334,20 @@ importers:
         specifier: ^0.30.21
         version: 0.30.21
 
-  packages/rollup-plugin-remove-dog-calls/dist: {}
+  packages/rollup-plugin-remove-dog-calls/dist:
+    dependencies:
+      '@rollup/pluginutils':
+        specifier: ^5.3.0
+        version: 5.3.0(rollup@4.57.1)
+      acorn:
+        specifier: ^8.15.0
+        version: 8.15.0
+      estree-walker:
+        specifier: ^3.0.3
+        version: 3.0.3
+      magic-string:
+        specifier: ^0.30.21
+        version: 0.30.21
 
   packages/rollup-preserve-directive: {}
 
@@ -2254,8 +2267,8 @@ packages:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
     engines: {node: '>=18'}
 
-  globals@17.2.0:
-    resolution: {integrity: sha512-tovnCz/fEq+Ripoq+p/gN1u7l6A7wwkoBT9pRCzTHzsD/LvADIzXZdjmRymh5Ztf0DYC3Rwg5cZRYjxzBmzbWg==}
+  globals@17.3.0:
+    resolution: {integrity: sha512-yMqGUQVVCkD4tqjOJf3TnrvaaHDMYp4VlUSObbkIiuCPe/ofdMBFIAcBbCSRFWOnos6qRiTVStDwqPLUclaxIw==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -4638,7 +4651,7 @@ snapshots:
   a-node-tools@4.3.0:
     dependencies:
       '@color-pen/static': 1.1.1
-      '@qqi/log': 1.0.0
+      '@qqi/log': 1.1.3
       a-js-tools: 2.0.1
       a-type-of-js: 2.0.0
       color-pen: 3.0.0
@@ -5448,7 +5461,7 @@ snapshots:
 
   globals@14.0.0: {}
 
-  globals@17.2.0: {}
+  globals@17.3.0: {}
 
   globalthis@1.0.4:
     dependencies:
