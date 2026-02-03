@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "name": "@qqi/log",
   "scripts": {
     "b": "rollup --config rollup.config.js && tsc -p tsconfig.types.json",
